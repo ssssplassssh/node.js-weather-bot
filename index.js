@@ -1,30 +1,27 @@
-/**
-* @Module HaveANiceDay
-* @author Valeriya Tokareva <tkrv.valery@gmail.com>
-* @version 0.1.0
-* @requires one-liner-joke
-* @requires weather-js
-* @description Запрашивает у пользователя город, выводит текущую погоду, прогноз на зватра
-               и анекдот для поднятия настроения.
-**/
-
-// подключены все необходимые модули
+// Підключені всі необхідні модулі 
 const joke = require('one-liner-joke');
 const weather = require('weather-js');
 const readline = require('readline');
-const question = "Please type in your city and country or region (i.e. Moscow, Russia):\n";
 
+// Задаються початкові значення змінних. Змінна question містить текст запиту для введення міста і країни або регіону користувачем.
+
+const question = "Please type in your city and country or region (i.e. Kiev, Ukraine):\n";
+
+// Створюється інтерфейс chooseDegree для отримання відповіді користувача щодо вибору шкали температури (Celsius або Fahrenheit). Інтерфейс використовує readline для зчитування введення з консолі
 const chooseDegree = readline.createInterface({
   input: process.stdin,
   output: process.stdout
 });
 
+// Виводиться привітальне повідомлення
 console.log("Hello! ｡◕‿◕｡\nWhat a lovely day! Let's check weather!\n");
 
 /**
- * @param {String} str строка, которую надо распарсить
- * @desc отделяет имя города, если были введены несколько слов
+ * @param {String} str рядок, який треба розпарсити
+ * @desc відділяє ім'я міста, якщо було введено кілька слів
 **/
+
+// Оголошується функція parseUserAnswer, яка приймає рядок str і розбиває його на ім'я міста, якщо введено кілька слів. Це робиться за допомогою роздільника ", ". Функція повертає розпарсене ім'я міста з великої літери
 function parseUserAnswer(str) {
   let result = '';
   let cityName = str;
@@ -37,18 +34,25 @@ function parseUserAnswer(str) {
   return result;
 }
 
+// Використовуючи інтерфейс chooseDegree, запитується у користувача, яку шкалу температури він вибирає (Celsius або Fahrenheit). Введення користувача зчитується, перевіряється та зберігається у змінну degree
 chooseDegree.question('Do you prefer Celcius or Fahrenheit degree? Type C or F only\n', (answer) => {
   let degree = 'C';
   if (answer && answer === 'c' || answer === 'C' || answer === 'F' || answer === 'f'){
     degree = answer.toUpperCase();
   }
+
+  // Викликається функція close() для закриття інтерфейсу chooseDegree, оскільки більше він не потрібний
   chooseDegree.close();
+
+  // Викликається функція showWeather(degree), яка приймає шкалу температури і відображає погоду
   showWeather(degree);
 });
 
 /**
-* @param {String} degree температурная шкала
+* @param {String} degree температурна шкала
 **/
+
+// Оголошується функція showWeather, яка приймає змінну degree (шкалу температури) і відображає погоду для введеного міста. Вона створює інтерфейс chooseCity для отримання введення міста користувачем і запитує у нього місто та країну або регіон
 function showWeather (degree) {
   const chooseCity = readline.createInterface({
     input: process.stdin,
@@ -61,6 +65,7 @@ function showWeather (degree) {
       let randomJoke = joke.getRandomJoke();
       console.log(`Excelent! We are checking the weather in ${city} now.\n(∩｀-´)⊃━☆ﾟ.*･｡ﾟ`);
 
+      // У функції showWeather перевіряється, чи було введено місто користувачем, і якщо так, то виконується запит до модуля weather-js, щоб отримати погоду для введеного міста. Після цього виводиться інформація про погоду, а також випадковий анекдот дня
       weather.find({search: answer, degreeType: degree}, function(err, result) {
         if(err || result.length === 0) {
           console.log(`There is something wrong with your request. Please try again later`);
@@ -71,6 +76,8 @@ function showWeather (degree) {
     } else {
       console.log('Sorry, but you have not typed in your city name.');
     }
+
+    // Закривається інтерфейс chooseCity
     chooseCity.close();
   });
 }
