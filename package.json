@@ -1,0 +1,15 @@
+{
+  "name": "first-homework-master",
+  "version": "1.0.0",
+  "description": "There is a console application that gives you current weather, forecast for tomorrow and a funny random joke. Celcius or Fahrenheit degrees are optional, Celsius is default.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "one-liner-joke": "^1.0.0",
+    "weather-js": "^2.0.0"
+  },
+  "author": "Ihor Rosolovskyi",
+  "license": "ISC"
+}
